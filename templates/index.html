@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wyszukiwarka AGD</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='images/zdj.jpg') }}" alt="Logo">
+    </div>
+    <div class="search-container">
+        <h1>Wyszukiwarka urządzeń AGD</h1>
+        {% if products %}
+        <form action="{{ url_for('scraping.results') }}" method="get">
+            <input type="text" name="search_term" placeholder="Wpisz nazwę urządzenia" required>
+            <button type="submit">Szukaj</button>
+        </form>
+        {% endif %}
+    </div>
+    <div class="message-container">
+        <p>{{ message }}</p>
+    </div>
+    <div class="scraping-container">
+        <form action="{{ url_for('scraping.start_scraping') }}" method="post">
+            <button type="submit">Uruchom Scrapers</button>
+        </form>
+    </div>
+</body>
+</html>

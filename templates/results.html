@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wyniki wyszukiwania</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="search-container">
+        <h1>Wyniki wyszukiwania</h1>
+        <form action="{{ url_for('scraping.results') }}" method="get">
+            <input type="text" name="search_term" value="{{ request.args.get('search_term', '') }}">
+            <select name="sort_by">
+                <option value="name">Nazwa</option>
+                <option value="price">Cena</option>
+            </select>
+            <select name="sort_order">
+                <option value="asc">Rosnąco</option>
+                <option value="desc">Malejąco</option>
+            </select>
+            <button type="submit">Sortuj</button>
+        </form>
+        <div class="results">
+            {% if products_count|default(0) > 0 %}
+                {% for product in products %}
+                <div class="product">
+                    <h3>{{ product.name }}</h3>
+                    <p>Cena: {{ product.price }} zł</p>
+                    <img src="{{ product.image }}" alt="{{ product.name }}" style="width:100px;height:100px;">
+                    <h4>Szczegółowe informacje</h4>
+                    <div class="features">
+                        {% for feature_name, feature_value in product.features.items() %}
+                        <p>{{ feature_name }}: {{ feature_value }}</p>
+                        {% endfor %}
+                    </div>
+                    <p><a href="{{ product.link }}">Zobacz więcej</a></p>
+                </div>
+                <hr class="product-separator">
+                {% endfor %}
+                <div class="pagination">
+                    {% if page > 1 %}
+                        <a href="{{ url_for('scraping.results', search_term=search_term, sort_by=sort_by, sort_order=sort_order, page=page-1) }}">Poprzednia strona</a>
+                    {% endif %}
+                    {% if page < total_pages %}
+                        <a href="{{ url_for('scraping.results', search_term=search_term, sort_by=sort_by, sort_order=sort_order, page=page+1) }}">Następna strona</a>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p>Brak produktów do wyświetlenia.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

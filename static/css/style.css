@@ -1,0 +1,110 @@
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-image: url('/static/images/a.png');
+    background-size: 200% 200%;
+    background-repeat: no-repeat;
+    animation: slideBackground 60s linear infinite;
+}
+
+.logo-container {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.logo-container img {
+    max-width: 550px;
+    max-height: 450px;
+    height: auto;
+    width: auto;
+    border-radius: 15px;
+}
+
+.search-container {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    width: 40%;
+    margin: 30px auto;
+    text-align: center;
+    border-radius: 15px;
+}
+
+input[type="text"], button {
+    width: 80%;
+    padding: 10px;
+    margin: 10px auto;
+    display: block;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+h1 {
+    color: #333;
+}
+
+@keyframes slideBackground {
+    0% {
+        background-position: 0% 0%;
+    }
+    25% {
+        background-position: 100% 0%;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+    75% {
+        background-position: 0% 100%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
+.pagination {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.pagination a:hover {
+    background-color: #45a049;
+}
+
+.product-separator {
+    border: none;
+    border-top: 2px solid black;
+    margin: 20px 0;
+}
+
+.product {
+    padding: 10px 0;
+}
+
+.message-container {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: solid black;
+}
