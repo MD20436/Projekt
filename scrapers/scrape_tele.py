@@ -23,23 +23,24 @@ async def scrape():
 
         product_list = soup.select_one('.cat-list-products')
         if product_list:
-         #   print("Znaleziono kontener listy produktów.")
             products = product_list.find_all('div', class_='cat-product card')
             if products:
                 for product in products:
                     try:
-                        name_tag = product.select_one('a.cat-product-image.productLink')
+                        name = product.get('data-product-name', 'Brak nazwy')
+                        
                         price_tag = product.select_one('.price-new')
                         image_tag = product.select_one('img.product-image')
-                        link_tag = product.select_one('a.cat-product-image.productLink')
+                        link_tag = product.select_one('div.cat-product-image')
                         features_tag = product.select('.cat-product-feature')
                         
-                        name = name_tag['title'].strip() if name_tag else "Brak nazwy"
                         price_str = price_tag.text.strip().split('zł')[0].replace(',', '.').replace(' ', '').strip() if price_tag else "0"
+                        price_str = ''.join(filter(lambda x: x.isdigit() or x == '.', price_str))
                         price = float(price_str)
+                        
                         image = image_tag.get('data-src') if image_tag and image_tag.get('data-src') else (image_tag.get('src') if image_tag else "Brak obrazka")
-
-                        link = link_tag['href'] if link_tag else "Brak linku"
+                        
+                        link = link_tag['data-button-href-param'] if link_tag and link_tag.has_attr('data-button-href-param') else "Brak linku"
                         full_link = f'https://www.morele.net{link}' if not link.startswith('http') else link
 
                         features = {}
@@ -56,10 +57,8 @@ async def scrape():
                             'features': features
                         }
 
-                 #       print("Produkt do zapisu:", product_data)
-
                         result = collection.insert_one(product_data)
-                #        print(f'Zapisano produkt: {name}, MongoDB _id: {result.inserted_id}')
+                        print(f'Zapisano produkt: {name}, MongoDB _id: {result.inserted_id}')
                     except Exception as e:
                         print(f'Błąd podczas przetwarzania produktu: {e}')
             else:

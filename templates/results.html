@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <title>Wyniki wyszukiwania</title>
@@ -11,17 +11,18 @@
         <form action="{{ url_for('scraping.results') }}" method="get">
             <input type="text" name="search_term" value="{{ request.args.get('search_term', '') }}">
             <select name="sort_by">
-                <option value="name">Nazwa</option>
-                <option value="price">Cena</option>
+                <option value="name" {% if sort_by == 'name' %}selected{% endif %}>Nazwa</option>
+                <option value="price" {% if sort_by == 'price' %}selected{% endif %}>Cena</option>
             </select>
             <select name="sort_order">
-                <option value="asc">Rosnąco</option>
-                <option value="desc">Malejąco</option>
+                <option value="asc" {% if sort_order == 'asc' %}selected{% endif %}>Rosnąco</option>
+                <option value="desc" {% if sort_order == 'desc' %}selected{% endif %}>Malejąco</option>
             </select>
             <button type="submit">Sortuj</button>
         </form>
         <div class="results">
             {% if products_count|default(0) > 0 %}
+                <p>Znaleziono produktów: {{ products_count }}</p>
                 {% for product in products %}
                 <div class="product">
                     <h3>{{ product.name }}</h3>
